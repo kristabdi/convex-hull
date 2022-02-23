@@ -19,6 +19,6 @@ for i in range(len(iris.target_names)):
     hull = ConvexHull(bucket)
     # DEBUG
     break
-
-for simplex in hull.simplices:
-    print(bucket[simplex, 0], bucket[simplex, 1])
+print(hull.simplices)
+# for simplex in hull.simplices:
+#     print(simplex)

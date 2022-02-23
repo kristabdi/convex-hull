@@ -33,6 +33,24 @@ def whichSide(p1, pn, ptest) :
         return -1
     return 0
 
+def getIndices(edgeList, points) :
+    # Fungsi yang mengembalikan list of array berisi indeks dimana edgeList berada di points
+    res = np.zeros((len(edgeList),2), dtype=int)
+    ind = 0
+    for i in range(len(edgeList)) :
+        foundX = False
+        foundY = False
+        for j in range(len(points)) :
+            if (edgeList[i][0][0] == points[j][0] and edgeList[i][0][1] == points[j][1]) :
+                res[ind][0] = j
+                foundX = True
+            if (edgeList[i][1][0] == points[j][0] and edgeList[i][1][1] == points[j][1]) :
+                res[ind][1] = j
+                foundY = True
+        if (foundX and foundY) :
+            ind+=1
+    return res
+
 def findHull(s, p, q, res, edgeList, side) :
     # Fungsi rekursif yang mencari titik terjauh dari garis yang dibentuk p dan q di sisi side (1 jika di kiri, -1 jika di kanan)
     if (len(s) == 0) :
@@ -66,23 +84,22 @@ def findHull(s, p, q, res, edgeList, side) :
     findHull(s, s[indexToAdd], q, res, edgeList, -whichSide(s[indexToAdd], q, p))
 
 def ConvexHull(points)  :
+    # Fungsi untuk mencari sisi yang koresponden di ConvexHull
+    # Inisialisasi array
     res = [[0]*2]*2
+    edgeList = [[0]*0]*0
     if (len(points) < 2) :
-        # Check that there are at least 2 points in the input set S of points
+        # Cek minimal ada 2 titik di points
         return
     # Mencari leftmost dan rightmost titik di points (p1,pn), dan memasukkan p1 dan pn ke dalam res array 
     sortedArr = sortPoints(points)
     res[0], res[1] = sortedArr[0], sortedArr[len(sortedArr)-1]
-    # Mencari titik yang membentuk convex hull dan dimasukkan ke array res
-    findHull(sortedArr, res[0], res[1], res, 1)
-    findHull(sortedArr, res[0], res[1], res, -1)
-    # DEBUG
-    # print(res[0])
-    # print()
-    # print(res[1])
-    # print()
-    # print(sortedArr)
-    return res
+    # Mencari titik yang membentuk convex hull dan memasukkan sisi yang terhubung ke array edgeList
+    findHull(sortedArr, res[0], res[1], res, edgeList, 1)
+    findHull(sortedArr, res[0], res[1], res, edgeList, -1)
+
+    edges = getIndices(edgeList, points)
+    return edges
 
 # ====================== MAIN ======================
 iris = datasets.load_iris()
@@ -95,9 +112,8 @@ df['Target'] = pd.DataFrame(iris.target)
 for i in range(len(iris.target_names)):
     bucket = df[df['Target'] == i]
     bucket = bucket.iloc[:,[0,1]].values
-    # print(bucket)
-    hull = ConvexHull(bucket)
-    print(hull)
+    edges = ConvexHull(bucket)
+    print(edges)
     print()
     # DEBUG
     break
