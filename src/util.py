@@ -1,5 +1,3 @@
-import numpy as np
-
 def isMember(arrToCheck, arr) :
     # Mengecek apakah arrToCheck adalah anggota dari list of array arr
     for i in range(len(arr)) :

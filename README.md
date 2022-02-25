@@ -22,6 +22,7 @@ cd convex-hull
 1. cd src
 2. Install all the library required using pip for example "pip instal numpy" 
 3. Open the ipynb file and run
+3. a. Change the column number in 'Penggantian Kolom' if you want to test different type of convex hull
 4. Fungsi ConvexHull can be used by importing its function from file 'main'
 5. Export file main, util, searchHull file to use it in another repo
 ```
