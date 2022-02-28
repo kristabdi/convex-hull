@@ -2,7 +2,7 @@ import numpy as np
 from searchHull import *
 from util import *
 
-def ConvexHull(points)  :
+def myConvexHull(points)  :
     # Fungsi untuk mencari sisi yang koresponden di ConvexHull
     # Inisialisasi array
     res = [[0]*2]*2
